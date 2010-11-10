@@ -42,7 +42,7 @@ around BUILDARGS => sub {
     my ($super, $class, $session, $pkg) = @_;
     return $class->$super(
         session => $session, 
-        package => $class->extension_name($pkg),
+        package => $class->definition_name($pkg),
     );
 };
 
@@ -80,11 +80,11 @@ sub load_package {
     eval "require $pkg" or die $@;
 }
 
-sub extension_name {
+sub definition_name {
     my ($class, $name) = @_;
     return $name =~ /^\+/ 
         ? substr($name, 1)
-        : "WebGUI::Install::Extension::$name";
+        : "WebGUI::Install::Definition::$name";
 }
 
 sub upgrade {

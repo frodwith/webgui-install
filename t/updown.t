@@ -1,6 +1,6 @@
-package main;
 use warnings;
 use strict;
+
 use Test::More;
 use WebGUI::Install::Module::Test;
 

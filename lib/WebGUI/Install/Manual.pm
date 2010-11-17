@@ -1,6 +1,8 @@
-=head1 NAME
+package WebGUI::Install::Manual;
 
-WebGUI::Install::Manual
+# ABSTRACT: What is this and how do I use it?
+
+1;
 
 =head1 WHAT IS THIS?
 

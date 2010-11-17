@@ -1,5 +1,7 @@
 package WebGUI::Install::Command;
 
+# ABSTRACT: Base class for WebGUI::Install commands
+
 use Moose;
 use File::Spec;
 use File::Copy;
@@ -76,8 +78,14 @@ sub txn_do {
     $db->beginTransaction();
     
     try {
-        &$block;
-        $db->commit();
+        my $finished;
+        WEBGUI_FATAL: while (1) {
+            &$block;
+            $db->commit();
+            $finished = 1;
+            last;
+        }
+        die "dying via WEBGUI_FATAL" unless $finished;
     }
     catch {
         print STDERR "$_\nError: cleaning up.\n";

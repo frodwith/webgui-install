@@ -6,12 +6,12 @@ extends 'WebGUI::Install::Module';
 my %versions;
 
 sub read_current_version {
-    my $self = shift; $versions{$self->package}
+    my $self = shift; $versions{$self->module}
 }
 
 sub write_current_version { 
     my $self = shift;
-    $versions{$self->package} = shift;
+    $versions{$self->module} = shift;
 }
 
 1;

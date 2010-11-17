@@ -1,5 +1,7 @@
 package WebGUI::Install::Command::install;
 
+# ABSTRACT: Invoke WebGUI::Install::Module from the command line
+
 use Moose;
 use WebGUI::Install::Module;
 use Monkey::Patch;

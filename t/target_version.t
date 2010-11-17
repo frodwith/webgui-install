@@ -1,6 +1,8 @@
 use warnings;
 use strict;
 
+use lib 't/lib';
+
 use Test::More tests => 6;
 use WebGUI::Install::Module;
 

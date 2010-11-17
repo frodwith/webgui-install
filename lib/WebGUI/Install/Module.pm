@@ -1,5 +1,7 @@
 package WebGUI::Install::Module;
 
+# ABSTRACT: Helper class for bumping module versions back and forth
+
 use Moose;
 use version;
 
@@ -9,7 +11,7 @@ has session => (
     required => 1,
 );
 
-has package => (
+has module => (
     is       => 'ro',
     isa      => 'Str',
     required => 1,
@@ -19,7 +21,7 @@ has _version_info => (
     is       => 'ro',
     isa     => 'HashRef',
     lazy    => 1,
-    default => sub { $_[0]->package->version_info }
+    default => sub { $_[0]->module->version_info }
 );
 
 has _versions => (
@@ -42,15 +44,15 @@ around BUILDARGS => sub {
     my ($super, $class, $session, $pkg) = @_;
     return $class->$super(
         session => $session, 
-        package => $class->definition_name($pkg),
+        module  => $class->definition_name($pkg),
     );
 };
 
 sub BUILD {
     my $self  = shift;
     my $class = ref $self;
-    my $pkg   = $self->package;
-    $class->load_package($pkg);
+    my $pkg   = $self->module;
+    $class->load_module($pkg);
     die "$pkg has no version_info method" unless $pkg->can('version_info');
 };
 
@@ -64,16 +66,16 @@ has current_version => (
 sub write_current_version {
     my ($self, $val) = @_;
     my $sql = 'UPDATE WGI_Versions SET version = ? WHERE extension = ?';
-    $self->session->db->write($sql, [ $val, $self->package ]);
+    $self->session->db->write($sql, [ $val, $self->module ]);
 }
 
 sub read_current_version {
     my $self = shift;
     my $sql  = 'SELECT version FROM WGI_Versions WHERE extension = ?';
-    version->parse($self->session->db->quickScalar($sql, [ $self->package ]));
+    version->parse($self->session->db->quickScalar($sql, [ $self->module ]));
 }
 
-sub load_package {
+sub load_module {
     my ($class, $pkg) = @_;
     no strict 'refs';
     return if scalar %{$pkg . '::'};

@@ -1,5 +1,7 @@
 package WebGUI::Install::Definition;
 
+# ABSTRACT: DSL for creating WebGUI::Install Definition modules
+
 my %packages;
 
 sub pkg_hash {
